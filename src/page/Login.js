@@ -15,7 +15,7 @@ const Login = () => {
     const error = useSelector((state) => state.user.error);
 
     const loginWithEmail = (event) => {
-        event.preventDefault()c;
+        event.preventDefault();
         dispatch(userActions.loginWithEmail({ email, password }));
     };
 
