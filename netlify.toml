@@ -1,10 +1,10 @@
 [build]
   command = "npm install --legacy-peer-deps && npm run build"
   publish = "build"
-  environment = [
-    "REACT_APP_LOCAL_BACKEND",
-    "REACT_APP_PROD_BACKEND",
-    "NPM_FLAGS",
-    "NODE_ENV",
-    "REACT_APP_API_URL"
-  ]
+
+[build.environment]
+  REACT_APP_LOCAL_BACKEND = "your_local_backend_value"
+  REACT_APP_PROD_BACKEND = "your_prod_backend_value"
+  NPM_FLAGS = "your_npm_flags"
+  NODE_ENV = "your_node_env"
+  REACT_APP_API_URL = "your_api_url"
