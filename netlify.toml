@@ -1,8 +1,10 @@
 [build]
-  command = "npm install && npm run build"
+  command = "npm install --legacy-peer-deps && npm run build"
   publish = "build"
-  environment = { NPM_FLAGS = "--legacy-peer-deps" }
-
-[context.production.environment]
-  NODE_ENV = "production"
-  REACT_APP_API_URL = "https://shoppingjiyun-2d8dc19d4e35.herokuapp.com/api"
+  environment = [
+    "REACT_APP_LOCAL_BACKEND",
+    "REACT_APP_PROD_BACKEND",
+    "NPM_FLAGS",
+    "NODE_ENV",
+    "REACT_APP_API_URL"
+  ]
