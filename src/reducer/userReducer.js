@@ -6,7 +6,6 @@ const initialState = {
     error: "",
     isRegistered: false,
 };
-
 function userReducer(state = initialState, action) {
     const { type, payload } = action;
     switch (type) {
@@ -25,8 +24,8 @@ function userReducer(state = initialState, action) {
         case types.LOGIN_FAIL:
         case types.REGISTER_USER_FAIL:
             let errorMessage = payload?.error || "Unknown error";
-            if (errorMessage.includes("already exists")) {
-                errorMessage = "계정이 이미 존재합니다.";
+            if (errorMessage.includes("이미 존재합니다")) {
+                errorMessage = "유저가 이미 존재합니다.";
             }
             return {
                 ...state,
@@ -46,5 +45,4 @@ function userReducer(state = initialState, action) {
             return state;
     }
 }
-
 export default userReducer;

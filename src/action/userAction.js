@@ -21,23 +21,25 @@ const loginWithEmail =
 const logout = () => async (dispatch) => {};
 
 const loginWithGoogle = (token) => async (dispatch) => {};
-
 const registerUser =
     ({ email, name, password }) =>
     async (dispatch) => {
         try {
             dispatch({ type: types.REGISTER_USER_REQUEST });
-            const response = await api.post("/user", {
-                email,
-                name,
-                password,
-            });
+            const response = await api.post("/user", { email, name, password });
             if (response.status !== 200) throw new Error(response.data.error);
-            dispatch({ type: types.REGISTER_USER_SUCCESS });
+            dispatch({
+                type: types.REGISTER_USER_SUCCESS,
+                payload: response.data,
+            });
         } catch (error) {
+            let errorMessage = "Unknown error";
+            if (error.err) {
+                errorMessage = error.err;
+            }
             dispatch({
                 type: types.REGISTER_USER_FAIL,
-                payload: error.message,
+                payload: { error: errorMessage },
             });
         }
     };

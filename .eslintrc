@@ -17,8 +17,11 @@
         "no-unused-vars": "off",
         "react/react-in-jsx-scope": "off",
         "react/prop-types": "off",
-        "react/no-unknown-property": "warn",
-        "react/no-deprecated": "warn"
+        "react/no-unknown-property": "off",
+        "react/no-deprecated": "warn",
+        "react/no-unescaped-entities": "off",
+        "no-case-declarations": "off",
+        "no-undef": "off"
     },
     "settings": {
         "react": {

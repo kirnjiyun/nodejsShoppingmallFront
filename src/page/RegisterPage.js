@@ -6,6 +6,7 @@ import { userActions } from "../action/userAction";
 import "../style/register.style.css";
 
 const RegisterPage = () => {
+    const error = useSelector((state) => state.user.error);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [formData, setFormData] = useState({
@@ -17,7 +18,6 @@ const RegisterPage = () => {
     });
     const [passwordError, setPasswordError] = useState("");
     const [policyError, setPolicyError] = useState(false);
-    const error = useSelector((state) => state.user.error);
     const isRegistered = useSelector((state) => state.user.isRegistered);
 
     useEffect(() => {
