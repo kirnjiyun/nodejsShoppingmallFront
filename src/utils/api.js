@@ -1,12 +1,12 @@
 import axios from "axios";
 
 // 상황에 따라 주소 설정
-// const LOCAL_BACKEND = process.env.REACT_APP_LOCAL_BACKEND;
+const LOCAL_BACKEND = process.env.REACT_APP_LOCAL_BACKEND;
 const PROD_BACKEND = process.env.REACT_APP_PROD_BACKEND;
 const BACKEND_PROXY = process.env.REACT_APP_BACKEND_PROXY;
 
 // 현재 환경에 맞는 베이스 URL 설정
-const baseURL = PROD_BACKEND || BACKEND_PROXY;
+const baseURL = LOCAL_BACKEND || PROD_BACKEND || BACKEND_PROXY;
 
 const api = axios.create({
     baseURL: baseURL,
