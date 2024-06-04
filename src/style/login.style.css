@@ -1,10 +1,3 @@
-.login-button-area {
-    align-items: center;
-}
-
-.login-form {
-    width: 100%;
-}
 .login-area {
     display: flex;
     flex-direction: column;
@@ -12,7 +5,15 @@
     align-items: center;
     max-width: 550px;
 }
-/* 내가 추가한거 */
+
+.login-form {
+    width: 100%;
+}
+
+.login-button-area {
+    align-items: center;
+}
+
 .bottomBox {
     display: flex;
     flex-direction: column;
@@ -31,10 +32,15 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
 }
 
 .kakaoBtn {
     border: 1px solid #f2c94c;
+    color: #3c1e1e;
 }
 
 .kakaoBtn::before {
@@ -43,11 +49,15 @@
     width: 24px;
     height: 24px;
     left: 14px;
-    background: url("../assets/images//login/logo_kakao.svg") no-repeat;
+    background: url("../assets//images/login/logo_kakao.svg") no-repeat center
+        center;
+    background-size: contain;
 }
 
 .googleBtn {
     border: 1px solid #4185f4;
+    color: #4285f4;
+    background-color: #fff;
 }
 
 .googleBtn::before {
@@ -56,5 +66,7 @@
     width: 24px;
     height: 24px;
     left: 14px;
-    background: url("../assets/images//login/logo_google.svg") no-repeat;
+    background: url("../assets//images/login/logo_google.svg") no-repeat center
+        center;
+    background-size: contain;
 }
