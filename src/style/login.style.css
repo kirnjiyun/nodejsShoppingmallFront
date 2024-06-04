@@ -18,15 +18,18 @@
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    max-width: 550px;
 }
 
 .loginBtn {
-    border-radius: 44px;
-    padding: 13px;
-    width: 95%;
+    border-radius: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    height: 45px;
+    width: 100%;
     background-color: #fff;
     display: flex;
     justify-content: center;
+    align-items: center;
     position: relative;
 }
 
@@ -44,7 +47,7 @@
 }
 
 .googleBtn {
-    border: 1px solid #767676;
+    border: 1px solid #4185f4;
 }
 
 .googleBtn::before {
