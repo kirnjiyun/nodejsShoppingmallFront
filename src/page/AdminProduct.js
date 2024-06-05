@@ -4,15 +4,15 @@ import SearchBox from "../component/SearchBox";
 import { useDispatch, useSelector } from "react-redux";
 import { productActions } from "../action/productAction";
 import NewItemDialog from "../component/NewItemDialog";
-import ReactPaginate from "react-paginate";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import ProductTable from "../component/ProductTable";
+import Pagination from "../component/Pagination";
 
 const AdminProduct = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const productList = useSelector((state) => state.product.productList);
-    const totalPages = useSelector((state) => state.product.totalPages);
+    const totalPageNum = useSelector((state) => state.product.totalPageNum); // 변수 이름 변경
     const [query, setQuery] = useSearchParams();
     const [showDialog, setShowDialog] = useState(false);
     const [searchQuery, setSearchQuery] = useState({
@@ -48,13 +48,8 @@ const AdminProduct = () => {
     // searchQuery와 URLSearchParams를 동기화하는 useEffect
     useEffect(() => {
         console.log("Setting query params:", searchQuery);
-        if (
-            query.get("page") !== searchQuery.page.toString() ||
-            query.get("name") !== searchQuery.name
-        ) {
-            setQuery(searchQuery);
-        }
-    }, [searchQuery, query, setQuery]);
+        setQuery(searchQuery);
+    }, [searchQuery]);
 
     const deleteItem = (id) => {
         // 아이템 삭제하기
@@ -75,6 +70,7 @@ const AdminProduct = () => {
             ...prev,
             page: selected + 1,
         }));
+        console.log("selected page", selected + 1);
     };
 
     return (
@@ -98,26 +94,10 @@ const AdminProduct = () => {
                     deleteItem={deleteItem}
                     openEditForm={openEditForm}
                 />
-                <ReactPaginate
-                    nextLabel="next >"
-                    onPageChange={handlePageClick}
-                    pageRangeDisplayed={5}
-                    pageCount={totalPages}
+                <Pagination
+                    handlePageClick={handlePageClick}
                     forcePage={parseInt(searchQuery.page) - 1}
-                    previousLabel="< previous"
-                    renderOnZeroPageCount={null}
-                    pageClassName="page-item"
-                    pageLinkClassName="page-link"
-                    previousClassName="page-item"
-                    previousLinkClassName="page-link"
-                    nextClassName="page-item"
-                    nextLinkClassName="page-link"
-                    breakLabel="..."
-                    breakClassName="page-item"
-                    breakLinkClassName="page-link"
-                    containerClassName="pagination"
-                    activeClassName="active"
-                    className="display-center list-style-none"
+                    pageCount={totalPageNum}
                 />
             </Container>
 

@@ -16,7 +16,7 @@ const getProductList = (query) => async (dispatch) => {
 
         dispatch({
             type: types.PRODUCT_GET_SUCCESS,
-            payload: response.data.data,
+            payload: response.data,
         });
         console.log("PRODUCT_GET_SUCCESS 디스패치됨");
     } catch (error) {

@@ -1,6 +1,11 @@
 import * as types from "../constants/product.constants";
 
-const initialState = { loading: false, error: "", productList: [] };
+const initialState = {
+    loading: false,
+    error: "",
+    productList: [],
+    totalPageNum: 1,
+};
 
 function productReducer(state = initialState, action) {
     const { type, payload } = action;
@@ -15,7 +20,8 @@ function productReducer(state = initialState, action) {
                 ...state,
                 loading: false,
                 error: "",
-                productList: payload,
+                productList: payload.data,
+                totalPageNum: payload.totalPageNum,
             };
         case types.PRODUCT_CREATE_FAIL:
         case types.PRODUCT_GET_FAIL:
