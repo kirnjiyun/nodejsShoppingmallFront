@@ -32,22 +32,29 @@ const AdminProduct = () => {
         "",
     ];
 
+    // 제품 목록을 가져오는 useEffect
     useEffect(() => {
+        console.log("Fetching products with query:", searchQuery);
         dispatch(productActions.getProductList({ ...searchQuery }));
     }, [dispatch, searchQuery]);
 
+    // URL 파라미터와 searchQuery를 동기화하는 useEffect
     useEffect(() => {
-        if (!searchQuery.name) {
-            const { name, ...rest } = searchQuery;
-            setSearchQuery(rest);
-        }
+        console.log("Syncing URL with searchQuery:", searchQuery);
         const params = new URLSearchParams(searchQuery);
         navigate("?" + params.toString());
     }, [searchQuery, navigate]);
 
+    // searchQuery와 URLSearchParams를 동기화하는 useEffect
     useEffect(() => {
-        setQuery({ ...searchQuery });
-    }, [searchQuery, setQuery]);
+        console.log("Setting query params:", searchQuery);
+        if (
+            query.get("page") !== searchQuery.page.toString() ||
+            query.get("name") !== searchQuery.name
+        ) {
+            setQuery(searchQuery);
+        }
+    }, [searchQuery, query, setQuery]);
 
     const deleteItem = (id) => {
         // 아이템 삭제하기
