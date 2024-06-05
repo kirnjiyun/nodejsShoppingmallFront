@@ -3,7 +3,6 @@ import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import { currencyFormat } from "../utils/number";
 const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
-    console.log("추가한옷들", data);
     return (
         <div className="overflow-x">
             <Table striped bordered hover>
@@ -60,7 +59,7 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
                             </tr>
                         ))
                     ) : (
-                        <tr>아아아</tr>
+                        <tr>아이템이 없습니다.</tr>
                     )}
                 </tbody>
             </Table>

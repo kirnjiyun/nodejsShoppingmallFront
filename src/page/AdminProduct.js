@@ -4,17 +4,16 @@ import SearchBox from "../component/SearchBox";
 import { useDispatch, useSelector } from "react-redux";
 import { productActions } from "../action/productAction";
 import NewItemDialog from "../component/NewItemDialog";
-import * as types from "../constants/product.constants";
 import ReactPaginate from "react-paginate";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { commonUiActions } from "../action/commonUiAction";
 import ProductTable from "../component/ProductTable";
 
 const AdminProduct = () => {
     const navigate = useNavigate();
-    const productList = useSelector((state) => state.product.productList);
-    const [query, setQuery] = useSearchParams();
     const dispatch = useDispatch();
+    const productList = useSelector((state) => state.product.productList);
+    const totalPages = useSelector((state) => state.product.totalPages);
+    const [query, setQuery] = useSearchParams();
     const [showDialog, setShowDialog] = useState(false);
     const [searchQuery, setSearchQuery] = useState({
         page: query.get("page") || 1,
@@ -33,29 +32,34 @@ const AdminProduct = () => {
         "",
     ];
 
-    //상품리스트 가져오기 (url쿼리 맞춰서)
     useEffect(() => {
-        console.log("Dispatching getProductList");
-        dispatch(productActions.getProductList(searchQuery));
-    }, [searchQuery, dispatch]);
+        dispatch(productActions.getProductList({ ...searchQuery }));
+    }, [dispatch, searchQuery]);
+
+    useEffect(() => {
+        if (!searchQuery.name) {
+            const { name, ...rest } = searchQuery;
+            setSearchQuery(rest);
+        }
+        const params = new URLSearchParams(searchQuery);
+        navigate("?" + params.toString());
+    }, [searchQuery, navigate]);
 
     useEffect(() => {
         setQuery({ ...searchQuery });
     }, [searchQuery, setQuery]);
 
     const deleteItem = (id) => {
-        //아이템 삭제하가ㅣ
+        // 아이템 삭제하기
     };
 
     const openEditForm = (product) => {
-        //edit모드로 설정하고
-        // 아이템 수정다이얼로그 열어주기
+        // edit 모드로 설정하고 아이템 수정 다이얼로그 열기
     };
 
     const handleClickNewItem = () => {
-        //new 모드로 설정하고
+        // new 모드로 설정하고 다이얼로그 열기
         setMode("new");
-        // 다이얼로그 열어주기
         setShowDialog(true);
     };
 
@@ -91,7 +95,7 @@ const AdminProduct = () => {
                     nextLabel="next >"
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={5}
-                    pageCount={100}
+                    pageCount={totalPages}
                     forcePage={parseInt(searchQuery.page) - 1}
                     previousLabel="< previous"
                     renderOnZeroPageCount={null}

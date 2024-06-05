@@ -40,7 +40,6 @@
 
 .kakaoBtn {
     border: 1px solid #f2c94c;
-    color: #3c1e1e;
 }
 
 .kakaoBtn::before {
@@ -56,7 +55,6 @@
 
 .googleBtn {
     border: 1px solid #4185f4;
-    color: #4285f4;
     background-color: #fff;
 }
 

@@ -69,10 +69,10 @@ const Login = () => {
                     <div className="text-align-center mt-3">
                         <p>-sns 계정으로 로그인하기-</p>
                         <div className="bottomBox">
-                            <button className="loginBtn kakaoBtn">
+                            <button className="loginBtn kakaoBtn" disabled>
                                 카카오톡 계정으로 로그인
                             </button>
-                            <button className="loginBtn googleBtn">
+                            <button className="loginBtn googleBtn" disabled>
                                 구글 계정으로 로그인
                             </button>
                         </div>
