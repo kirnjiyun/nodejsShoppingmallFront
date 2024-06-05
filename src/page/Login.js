@@ -18,10 +18,16 @@ const Login = () => {
 
     useEffect(() => {
         if (scriptStatus === "ready") {
-            window.google.accounts.id.initialize({
-                client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-                callback: handleGoogleLogin,
-            });
+            if (
+                window.google &&
+                window.google.accounts &&
+                window.google.accounts.id
+            ) {
+                window.google.accounts.id.initialize({
+                    client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+                    callback: handleGoogleLogin,
+                });
+            }
         }
     }, [scriptStatus]);
 
@@ -95,15 +101,14 @@ const Login = () => {
                             <button className="loginBtn kakaoBtn">
                                 카카오톡 계정으로 로그인
                             </button>
-                            {scriptStatus === "ready" && (
+                            {scriptStatus === "ready" ? (
                                 <button
                                     onClick={handleGoogleSignIn}
                                     className="loginBtn googleBtn"
                                 >
                                     구글 계정으로 로그인
                                 </button>
-                            )}
-                            {scriptStatus !== "ready" && (
+                            ) : (
                                 <button
                                     className="loginBtn googleBtn"
                                     style={{
