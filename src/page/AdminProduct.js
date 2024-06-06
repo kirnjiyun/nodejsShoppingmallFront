@@ -12,7 +12,7 @@ const AdminProduct = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const productList = useSelector((state) => state.product.productList);
-    const totalPageNum = useSelector((state) => state.product.totalPageNum); // 변수 이름 변경
+    const totalPageNum = useSelector((state) => state.product.totalPageNum);
     const [query, setQuery] = useSearchParams();
     const [showDialog, setShowDialog] = useState(false);
     const [searchQuery, setSearchQuery] = useState({
