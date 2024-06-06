@@ -47,6 +47,7 @@ function userReducer(state = initialState, action) {
                 error: "",
                 isRegistered: false,
             };
+
         default:
             return state;
     }

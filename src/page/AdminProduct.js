@@ -7,7 +7,7 @@ import NewItemDialog from "../component/NewItemDialog";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import ProductTable from "../component/ProductTable";
 import Pagination from "../component/Pagination";
-
+import * as types from "../constants/product.constants";
 const AdminProduct = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -56,11 +56,12 @@ const AdminProduct = () => {
     };
 
     const openEditForm = (product) => {
-        // edit 모드로 설정하고 아이템 수정 다이얼로그 열기
+        setMode("edit");
+        dispatch({ type: types.SET_SELECTED_PRODUCT, payload: product });
+        setShowDialog(true);
     };
 
     const handleClickNewItem = () => {
-        // new 모드로 설정하고 다이얼로그 열기
         setMode("new");
         setShowDialog(true);
     };

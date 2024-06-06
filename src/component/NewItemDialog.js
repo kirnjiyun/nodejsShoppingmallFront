@@ -18,9 +18,7 @@ const InitialFormData = {
 };
 
 const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
-    const selectedProduct = useSelector(
-        (state) => state.product.selectedProduct
-    );
+    const { selectedProduct } = useSelector((state) => state.product);
     const { error } = useSelector((state) => state.product);
     const [formData, setFormData] = useState(
         mode === "new" ? { ...InitialFormData } : selectedProduct
@@ -44,10 +42,17 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
         }
         const stockObject = Object.fromEntries(stock);
         const updatedFormData = { ...formData, stock: stockObject };
+
         if (mode === "new") {
             dispatch(productActions.createProduct(updatedFormData));
         } else {
-            dispatch(productActions.updateProduct(updatedFormData));
+            //edit일때
+            dispatch(
+                productActions.updateProduct(
+                    updatedFormData,
+                    selectedProduct._id
+                )
+            );
         }
         handleClose();
     };
@@ -98,7 +103,11 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     useEffect(() => {
         if (showDialog) {
             if (mode === "edit") {
-                const stockArray = Object.entries(selectedProduct.stock || {});
+                console.log(selectedProduct);
+                setFormData(selectedProduct);
+                const stockArray = Object.keys(selectedProduct.stock).map(
+                    (size) => [size, selectedProduct.stock[size]]
+                );
                 setStock(stockArray);
             } else {
                 setFormData({ ...InitialFormData });

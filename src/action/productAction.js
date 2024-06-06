@@ -50,23 +50,43 @@ const getProductListAll = () => async (dispatch) => {
 };
 
 const getProductDetail = (id) => async (dispatch) => {
-    console.log("getProductDetail 호출됨");
+    try {
+        dispatch({ type: types.PRODUCT_GET_REQUEST });
+        const response = await api.get(`/product/${id}`);
+        if (response.status !== 200) throw new Error(response.error);
+        dispatch({
+            type: types.PRODUCT_GET_SUCCESS,
+            payload: response.data,
+        });
+    } catch (error) {
+        dispatch({
+            type: types.PRODUCT_GET_FAIL,
+            payload: error.message || error,
+        });
+        dispatch(
+            commonUiActions.showToastMessage(
+                error.message || "Error fetching product details",
+                "error"
+            )
+        );
+    }
 };
 
 const createProduct = (formData) => async (dispatch) => {
     try {
         dispatch({ type: types.PRODUCT_CREATE_REQUEST });
-
         const response = await api.post("/product", formData);
-
         if (response.status !== 200) throw new Error(response.error);
         dispatch({ type: types.PRODUCT_CREATE_SUCCESS });
-
-        dispatch(commonUiActions.showToastMessage("상품생성완료", "success"));
-
+        dispatch(
+            commonUiActions.showToastMessage(
+                "Product created successfully",
+                "success"
+            )
+        );
         dispatch(getProductList());
     } catch (error) {
-        console.error("제품 생성 에러:", error);
+        console.error("Product creation error:", error);
         dispatch({
             type: types.PRODUCT_CREATE_FAIL,
             payload: error.message || error,
@@ -81,11 +101,59 @@ const createProduct = (formData) => async (dispatch) => {
 };
 
 const deleteProduct = (id) => async (dispatch) => {
-    console.log("deleteProduct 호출됨");
+    try {
+        dispatch({ type: types.PRODUCT_DELETE_REQUEST });
+        const response = await api.delete(`/product/${id}`);
+        if (response.status !== 200) throw new Error(response.error);
+        dispatch({ type: types.PRODUCT_DELETE_SUCCESS, payload: id });
+        dispatch(
+            commonUiActions.showToastMessage(
+                "Product deleted successfully",
+                "success"
+            )
+        );
+        dispatch(getProductList());
+    } catch (error) {
+        console.error("Product deletion error:", error);
+        dispatch({
+            type: types.PRODUCT_DELETE_FAIL,
+            payload: error.message || error,
+        });
+        dispatch(
+            commonUiActions.showToastMessage(
+                error.message || "Error deleting product",
+                "error"
+            )
+        );
+    }
 };
 
-const editProduct = (formData, id) => async (dispatch) => {
-    console.log("editProduct 호출됨");
+const updateProduct = (formData, id) => async (dispatch) => {
+    try {
+        dispatch({ type: types.PRODUCT_EDIT_REQUEST });
+
+        if (!id) {
+            throw new Error("Product ID is missing");
+        }
+        const response = await api.put(`/product/${id}`, formData);
+        if (response.status !== 200) throw new Error(response.error);
+
+        dispatch({ type: types.PRODUCT_EDIT_SUCCESS });
+        dispatch(commonUiActions.showToastMessage("상품 수정 완료", "success"));
+        dispatch(getProductList({ page: 1, name: "" }));
+    } catch (error) {
+        console.error("Product editing error:", error);
+        dispatch({
+            type: types.PRODUCT_EDIT_FAIL,
+            payload: error.message || error,
+        });
+        dispatch(
+            commonUiActions.showToastMessage(
+                error.message || "상품 수정 실패",
+                "error"
+            )
+        );
+    }
 };
 
 export const productActions = {
@@ -93,6 +161,6 @@ export const productActions = {
     getProductListAll,
     createProduct,
     deleteProduct,
-    editProduct,
+    updateProduct,
     getProductDetail,
 };
