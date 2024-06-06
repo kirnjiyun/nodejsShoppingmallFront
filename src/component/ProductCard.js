@@ -1,5 +1,6 @@
 import React from "react";
 import "../style/productCard.style.css";
+import { currencyFormat } from "../utils/number";
 
 const ProductCard = ({ product }) => {
     const showProduct = (id) => {
@@ -10,7 +11,9 @@ const ProductCard = ({ product }) => {
         <div className="card" onClick={() => showProduct(product._id)}>
             <img src={product.image} alt={product.name} />
             <div className="productName">{product.name}</div>
-            <div className="productPrice">₩ {product.price}</div>
+            <div className="productPrice">
+                ₩ {currencyFormat(product.price)}
+            </div>
         </div>
     );
 };

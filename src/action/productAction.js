@@ -105,26 +105,15 @@ const deleteProduct = (id) => async (dispatch) => {
         dispatch({ type: types.PRODUCT_DELETE_REQUEST });
         const response = await api.delete(`/product/${id}`);
         if (response.status !== 200) throw new Error(response.error);
-        dispatch({ type: types.PRODUCT_DELETE_SUCCESS, payload: id });
-        dispatch(
-            commonUiActions.showToastMessage(
-                "Product deleted successfully",
-                "success"
-            )
-        );
-        dispatch(getProductList());
-    } catch (error) {
-        console.error("Product deletion error:", error);
         dispatch({
-            type: types.PRODUCT_DELETE_FAIL,
-            payload: error.message || error,
+            type: types.PRODUCT_DELETE_SUCCESS,
         });
-        dispatch(
-            commonUiActions.showToastMessage(
-                error.message || "Error deleting product",
-                "error"
-            )
-        );
+        dispatch(commonUiActions.showToastMessage("상품 삭제 완료", "success"));
+
+        dispatch(getProductList({ page: 1 }));
+    } catch (error) {
+        dispatch({ type: types.PRODUCT_DELETE_FAIL, payload: error.error });
+        dispatch(commonUiActions.showToastMessage(error.error, "error"));
     }
 };
 
