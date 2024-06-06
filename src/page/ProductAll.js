@@ -12,26 +12,37 @@ const useQuery = () => {
 const ProductAll = () => {
     const dispatch = useDispatch();
     const products = useSelector((state) => state.product.productList);
-    const navigate = useNavigate();
     const query = useQuery();
+    const navigate = useNavigate();
 
     const [searchQuery, setSearchQuery] = useState({
         name: query.get("name") || "",
     });
 
     useEffect(() => {
-        dispatch(productActions.getProductListAll({ ...searchQuery }));
-    }, [dispatch, searchQuery]);
+        dispatch(productActions.getProductListAll());
+    }, [dispatch]);
 
     useEffect(() => {
         const params = new URLSearchParams(searchQuery);
         navigate({ search: params.toString() }, { replace: true });
     }, [searchQuery, navigate]);
 
+    useEffect(() => {
+        const name = query.get("name") || "";
+        if (name !== searchQuery.name) {
+            setSearchQuery({ name });
+        }
+    }, [query]);
+
+    const filteredProducts = products.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.name.toLowerCase())
+    );
+
     return (
         <Container>
             <Row>
-                {products.map((product) => (
+                {filteredProducts.map((product) => (
                     <Col key={product._id} lg={3} md={4} sm={12}>
                         <ProductCard product={product} />
                     </Col>
