@@ -49,26 +49,21 @@ const getProductListAll = () => async (dispatch) => {
     }
 };
 
-const getProductDetail = (id) => async (dispatch) => {
+export const getProductDetail = (id) => async (dispatch) => {
     try {
-        dispatch({ type: types.PRODUCT_GET_REQUEST });
+        dispatch({ type: types.GET_PRODUCT_DETAIL_REQUEST });
         const response = await api.get(`/product/${id}`);
         if (response.status !== 200) throw new Error(response.error);
         dispatch({
-            type: types.PRODUCT_GET_SUCCESS,
+            type: types.GET_PRODUCT_DETAIL_SUCCESS,
             payload: response.data,
         });
     } catch (error) {
         dispatch({
-            type: types.PRODUCT_GET_FAIL,
-            payload: error.message || error,
+            type: types.GET_PRODUCT_DETAIL_FAIL,
+            payload: error.message,
         });
-        dispatch(
-            commonUiActions.showToastMessage(
-                error.message || "Error fetching product details",
-                "error"
-            )
-        );
+        dispatch(commonUiActions.showToastMessage(error.message, "error"));
     }
 };
 

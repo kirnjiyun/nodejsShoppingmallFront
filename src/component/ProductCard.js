@@ -1,9 +1,13 @@
 import React from "react";
 import "../style/productCard.style.css";
 import { currencyFormat } from "../utils/number";
+import { useNavigate } from "react-router";
 
 const ProductCard = ({ product }) => {
+    const navigate = useNavigate();
+
     const showProduct = (id) => {
+        navigate(`/product/${id}`);
         console.log("Product ID:", id);
     };
 
