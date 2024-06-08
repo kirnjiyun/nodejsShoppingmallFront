@@ -34,7 +34,7 @@ const Navbar = ({ user }) => {
     const onCheckEnter = (event) => {
         if (event.key === "Enter") {
             if (searchTerm.trim() === "") {
-                return navigate("/");
+                return navigate("/products");
             }
             navigate(`/products?name=${searchTerm}`);
         }
