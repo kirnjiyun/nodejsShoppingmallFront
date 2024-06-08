@@ -42,11 +42,17 @@ const ProductAll = () => {
     return (
         <Container>
             <Row>
-                {filteredProducts.map((product) => (
-                    <Col key={product._id} lg={3} md={4} sm={12}>
-                        <ProductCard product={product} />
+                {filteredProducts.length > 0 ? (
+                    filteredProducts.map((product) => (
+                        <Col key={product._id} lg={3} md={4} sm={12}>
+                            <ProductCard product={product} />
+                        </Col>
+                    ))
+                ) : (
+                    <Col>
+                        <p>검색 결과와 일치하는 제품이 없습니다</p>
                     </Col>
-                ))}
+                )}
             </Row>
         </Container>
     );
