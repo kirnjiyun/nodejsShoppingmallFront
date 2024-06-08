@@ -5,7 +5,7 @@ import {
     LOGOUT,
 } from "../constants/user.constants";
 
-const initialState = { loading: false, error: "" };
+const initialState = { loading: false, error: "", cartItemQty: 0 };
 
 function cartReducer(state = initialState, action) {
     const { type, payload } = action;
@@ -13,7 +13,7 @@ function cartReducer(state = initialState, action) {
         case types.ADD_TO_CART_REQUEST:
             return { ...state, loading: true };
         case types.ADD_TO_CART_SUCCESS:
-            return { ...state };
+            return { ...state, cartItemQty: payload };
         case types.ADD_TO_CART_FAIL:
             return { ...state, loading: false, error: payload };
         default:

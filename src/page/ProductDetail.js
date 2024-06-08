@@ -37,9 +37,8 @@ const ProductDetail = () => {
             return;
         }
         if (!user) navigate("/login");
-        dispatch(cartActions.addToCart({ id, size }));
+        dispatch(cartActions.addItemToCart({ id, size }));
     };
-
     if (loading) {
         return (
             <div className="loader-container">

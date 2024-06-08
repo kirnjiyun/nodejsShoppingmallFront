@@ -13,7 +13,7 @@ import { userActions } from "../action/userAction";
 
 const Navbar = ({ user }) => {
     const dispatch = useDispatch();
-    const { cartItemCount } = useSelector((state) => state.cart);
+    const cartItemCount = useSelector((state) => state.cart.cartItemQty); // 변수명 수정
     const isMobile = window.navigator.userAgent.indexOf("Mobile") !== -1;
     const [showSearchBox, setShowSearchBox] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
