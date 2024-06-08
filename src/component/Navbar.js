@@ -153,7 +153,7 @@ const Navbar = ({ user }) => {
             </div>
 
             <div className="nav-logo">
-                <Link to="/">
+                <Link to="/products">
                     <img
                         width={100}
                         src="/image/hm-logo.png"
