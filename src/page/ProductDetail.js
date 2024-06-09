@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { productActions } from "../action/productAction";
 import { ColorRing } from "react-loader-spinner";
 import { cartActions } from "../action/cartAction";
-import { commonUiActions } from "../action/commonUiAction";
 import { currencyFormat } from "../utils/number";
 import "../style/productDetail.style.css";
 
@@ -14,6 +13,7 @@ const ProductDetail = () => {
     const selectedProduct = useSelector(
         (state) => state.product.selectedProduct?.data
     );
+    const sizeOrder = ["XS", "S", "M", "L", "XL"];
     const loading = useSelector((state) => state.product.loading);
     const error = useSelector((state) => state.product.error);
     const { user } = useSelector((state) => state.user);
@@ -39,6 +39,9 @@ const ProductDetail = () => {
         if (!user) navigate("/login");
         dispatch(cartActions.addItemToCart({ id, size }));
     };
+    const sortedSizes = sizeOrder.filter(
+        (size) => selectedProduct.stock[size] !== undefined
+    );
     if (loading) {
         return (
             <div className="loader-container">
@@ -124,26 +127,28 @@ const ProductDetail = () => {
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu className="size-drop-down">
-                            {selectedProduct.stock &&
-                                Object.keys(selectedProduct.stock).length > 0 &&
-                                Object.keys(selectedProduct.stock).map((item) =>
-                                    selectedProduct.stock[item] > 0 ? (
-                                        <Dropdown.Item
-                                            key={item}
-                                            eventKey={item}
-                                        >
-                                            {item.toUpperCase()}
-                                        </Dropdown.Item>
-                                    ) : (
-                                        <Dropdown.Item
-                                            key={item}
-                                            eventKey={item}
-                                            disabled
-                                        >
-                                            {item.toUpperCase()}
-                                        </Dropdown.Item>
-                                    )
-                                )}
+                            {sortedSizes.map((item) =>
+                                selectedProduct.stock[item] > 0 ? (
+                                    <Dropdown.Item key={item} eventKey={item}>
+                                        {item.toUpperCase()} -{" "}
+                                        {selectedProduct.stock[item]}개
+                                        {selectedProduct.stock[item] <= 5 && (
+                                            <span className="low-stock">
+                                                {" "}
+                                                (품절임박)
+                                            </span>
+                                        )}
+                                    </Dropdown.Item>
+                                ) : (
+                                    <Dropdown.Item
+                                        key={item}
+                                        eventKey={item}
+                                        disabled
+                                    >
+                                        {item.toUpperCase()} - 품절
+                                    </Dropdown.Item>
+                                )
+                            )}
                         </Dropdown.Menu>
                     </Dropdown>
                     <div className="warning-message">
