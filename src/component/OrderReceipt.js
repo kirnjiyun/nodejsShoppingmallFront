@@ -9,7 +9,7 @@ const OrderReceipt = ({ cartList }) => {
     const navigate = useNavigate();
 
     const totalPrice = cartList.reduce((total, product) => {
-        return total + product.productId.price * product.qty;
+        return total + product.productId?.price * product.qty;
     }, 0);
 
     return (
@@ -17,12 +17,12 @@ const OrderReceipt = ({ cartList }) => {
             <h3 className="receipt-title">주문 내역</h3>
             <ul className="receipt-list">
                 {cartList.map((product) => (
-                    <li key={product.productId.id}>
+                    <li key={product.productId?.id}>
                         <div className="display-flex space-between">
-                            <div>{product.productId.name}</div>
+                            <div>{product.productId?.name}</div>
                             <div>{product.qty}</div>
                             <div>
-                                ₩ {currencyFormat(product.productId.price)}
+                                ₩ {currencyFormat(product.productId?.price)}
                             </div>
                         </div>
                     </li>

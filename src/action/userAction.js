@@ -13,8 +13,6 @@ const loginWithToken = () => async (dispatch) => {
             throw new Error(response.data.error || "Unknown error occurred");
         }
 
-        console.log("rrr", response);
-
         dispatch({
             type: types.LOGIN_WITH_TOKEN_SUCCESS,
             payload: response.data,

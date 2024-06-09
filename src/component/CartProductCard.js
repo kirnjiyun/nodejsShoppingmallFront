@@ -22,21 +22,24 @@ const CartProductCard = ({ item }) => {
             <Row>
                 <Col md={2} xs={12}>
                     <img
-                        src={item.productId.image}
+                        src={item.productId?.image}
                         width={112}
-                        alt={item.productId.name}
+                        alt={item.productId?.name}
                     />
                 </Col>
                 <Col md={10} xs={12}>
                     <div className="display-flex space-between">
-                        <h5>{item.productId.name}</h5>
-                        <button className="trash-button" onClick={deleteCart}>
+                        <h5>{item.productId?.name}</h5>
+                        <button
+                            className="trash-button"
+                            onClick={() => deleteCart(item._id)}
+                        >
                             <FontAwesomeIcon icon={faTrash} width={24} />
                         </button>
                     </div>
                     <div>
                         <strong>
-                            ₩ {currencyFormat(item.productId.price)}
+                            ₩ {currencyFormat(item.productId?.price)}
                         </strong>
                     </div>
                     <div>Size: {item.size}</div>
@@ -56,7 +59,7 @@ const CartProductCard = ({ item }) => {
                     </div>
                     <div>
                         Total: ₩
-                        {currencyFormat(item.productId.price * item.qty)}
+                        {currencyFormat(item.productId?.price * item.qty)}
                     </div>
                 </Col>
             </Row>

@@ -19,7 +19,7 @@ function cartReducer(state = initialState, action) {
 
     switch (type) {
         case LOGOUT: {
-            return { ...state, cartItemCount: 0 };
+            return { ...state, cartItemQty: 0, cartList: [] };
         }
         case types.ADD_TO_CART_REQUEST:
         case types.GET_CART_LIST_REQUEST:
@@ -29,13 +29,26 @@ function cartReducer(state = initialState, action) {
             return { ...state, loading: true };
 
         case types.ADD_TO_CART_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                cartItemQty: state.cartItemQty + 1,
+                cartList: [...state.cartList, payload],
+            };
         case types.DELETE_CART_ITEM_SUCCESS:
-            return { ...state, loading: false, cartItemQty: payload };
+            return {
+                ...state,
+                loading: false,
+                cartItemQty: state.cartItemQty - 1,
+                cartList: state.cartList.filter((item) => item._id !== payload),
+            };
         case types.UPDATE_CART_ITEM_SUCCESS:
             return {
                 ...state,
                 loading: false,
-                cartList: payload,
+                cartList: state.cartList.map((item) =>
+                    item._id === payload._id ? payload : item
+                ),
             };
         case types.GET_CART_LIST_SUCCESS:
             return {
@@ -44,7 +57,11 @@ function cartReducer(state = initialState, action) {
                 cartList: payload,
             };
         case types.GET_CART_QTY_SUCCESS:
-            return { ...state, cartItemQty: payload };
+            return {
+                ...state,
+                loading: false,
+                cartItemQty: payload,
+            };
         case types.ADD_TO_CART_FAIL:
         case types.GET_CART_LIST_FAIL:
         case types.DELETE_CART_ITEM_FAIL:
@@ -55,4 +72,5 @@ function cartReducer(state = initialState, action) {
             return state;
     }
 }
+
 export default cartReducer;

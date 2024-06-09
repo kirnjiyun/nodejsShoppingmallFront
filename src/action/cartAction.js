@@ -50,8 +50,11 @@ const updateQty = (id, value) => async (dispatch) => {
 
 const deleteCartItem = (id) => async (dispatch) => {
     try {
+        console.log("Deleting cart item with ID:", id);
         dispatch({ type: types.DELETE_CART_ITEM_REQUEST });
         const response = await api.delete(`/cart/${id}`);
+        console.log("API response:", response);
+
         if (response.status !== 200) throw new Error(response.error);
 
         dispatch({
@@ -60,15 +63,16 @@ const deleteCartItem = (id) => async (dispatch) => {
         });
         dispatch(getCartList());
     } catch (error) {
-        dispatch({ type: types.DELETE_CART_ITEM_FAIL, payload: error });
-        dispatch(commonUiActions.showToastMessage(error, "error"));
+        console.error("Error deleting cart item:", error);
+        dispatch({ type: types.DELETE_CART_ITEM_FAIL, payload: error.message });
+        dispatch(commonUiActions.showToastMessage(error.message, "error"));
     }
 };
+
 const getCartList = () => async (dispatch) => {
     try {
         dispatch({ type: types.GET_CART_LIST_REQUEST });
         const response = await api.get("/cart");
-        console.log("rrrrr", response);
         if (response.status !== 200) throw new Error(response.data.error);
         dispatch({
             type: types.GET_CART_LIST_SUCCESS,
