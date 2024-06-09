@@ -10,15 +10,22 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../action/userAction";
+import { cartActions } from "../action/cartAction";
+import { useEffect } from "react";
 
 const Navbar = ({ user }) => {
     const dispatch = useDispatch();
-    const cartItemCount = useSelector((state) => state.cart.cartItemQty); // 변수명 수정
+    const cartItemCount = useSelector((state) => state.cart.cartItemQty);
     const isMobile = window.navigator.userAgent.indexOf("Mobile") !== -1;
     const [showSearchBox, setShowSearchBox] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [width, setWidth] = useState(0);
     const navigate = useNavigate();
+    useEffect(() => {
+        if (user) {
+            dispatch(cartActions.getCartQty());
+        }
+    }, [user]);
 
     const menuList = [
         "여성",
