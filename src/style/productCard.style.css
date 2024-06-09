@@ -1,48 +1,59 @@
 .card {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 200px;
-    margin: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
+    min-width: 240px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #f0efef;
+    border-radius: 2px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background-color: black;
 }
 
 .card img {
     width: 100%;
     height: auto;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    border-radius: 2px;
+    transition: opacity 0.2s;
 }
 
-.productName {
-    font-size: 1.1em;
-    font-weight: bold;
-    margin-bottom: 5px;
-    text-align: center;
-    color: #333;
+.card:hover img {
+    opacity: 0.2;
+}
+
+.productInfo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.productName,
+.productPrice {
+    opacity: 0;
+    transition: opacity 0.2s;
+    font-size: 1em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%;
-}
-
-.productPrice {
-    font-size: 1em;
-    color: #666;
-    text-align: center;
 }
 
 .card:hover .productName,
 .card:hover .productPrice {
-    color: #000;
+    opacity: 1;
+    color: #fff;
 }
