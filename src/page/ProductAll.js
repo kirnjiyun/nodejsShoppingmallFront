@@ -63,8 +63,10 @@ const ProductAll = () => {
         );
     }
 
-    const filteredProducts = products.filter((product) =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    const filteredProducts = products.filter(
+        (product) =>
+            !product.isDeleted &&
+            product.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
