@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
@@ -7,10 +7,14 @@ import { currencyFormat } from "../utils/number";
 const OrderReceipt = ({ cartList }) => {
     const location = useLocation();
     const navigate = useNavigate();
+    const [totalPrice, setTotalPrice] = useState(0);
 
-    const totalPrice = cartList.reduce((total, product) => {
-        return total + product.productId?.price * product.qty;
-    }, 0);
+    useEffect(() => {
+        const newTotalPrice = cartList.reduce((total, product) => {
+            return total + (product.productId?.price || 0) * product.qty;
+        }, 0);
+        setTotalPrice(newTotalPrice);
+    }, [cartList]);
 
     return (
         <div className="receipt-container">

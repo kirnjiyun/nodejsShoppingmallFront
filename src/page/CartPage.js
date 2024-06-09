@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../action/cartAction";
@@ -8,11 +8,24 @@ import "../style/cart.style.css";
 
 const CartPage = () => {
     const dispatch = useDispatch();
-    const { cartList } = useSelector((state) => state.cart);
+    const cartListFromState = useSelector((state) => state.cart.cartList);
+    const [cartList, setCartList] = useState([]);
 
     useEffect(() => {
         dispatch(cartActions.getCartList());
     }, [dispatch]);
+
+    useEffect(() => {
+        setCartList(cartListFromState);
+    }, [cartListFromState]);
+
+    const handleQtyChange = (id, quantity) => {
+        const updatedCartList = cartList.map((item) =>
+            item._id === id ? { ...item, qty: quantity } : item
+        );
+        setCartList(updatedCartList);
+        dispatch(cartActions.updateQty(id, quantity));
+    };
 
     return (
         <Container>
@@ -20,7 +33,11 @@ const CartPage = () => {
                 <Col xs={12} md={7}>
                     {cartList.length > 0 ? (
                         cartList.map((item) => (
-                            <CartProductCard item={item} key={item._id} />
+                            <CartProductCard
+                                item={item}
+                                key={item._id}
+                                onQtyChange={handleQtyChange}
+                            />
                         ))
                     ) : (
                         <div className="text-align-center empty-bag">

@@ -3,14 +3,19 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
-import { cartActions } from "../action/cartAction";
 import { currencyFormat } from "../utils/number";
 
-const CartProductCard = ({ item }) => {
+const CartProductCard = ({ item, onQtyChange }) => {
     const dispatch = useDispatch();
+    const [quantity, setQuantity] = React.useState(item.qty);
 
-    const handleQtyChange = (id, value) => {
-        dispatch(cartActions.updateQty(id, value));
+    const handleQtyChange = (event) => {
+        const value = parseInt(event.target.value, 10);
+        setQuantity(value);
+    };
+
+    const handleQtySubmit = () => {
+        onQtyChange(item._id, quantity);
     };
 
     const deleteCart = (id) => {
@@ -45,21 +50,22 @@ const CartProductCard = ({ item }) => {
                     <div>Size: {item.size}</div>
                     <div>
                         Quantity:
-                        <input
-                            type="number"
-                            min="1"
-                            max="10"
-                            onChange={(event) =>
-                                handleQtyChange(item._id, event.target.value)
-                            }
-                            required
-                            defaultValue={item.qty}
-                            className="qty-input"
-                        />
+                        <select
+                            value={quantity}
+                            onChange={handleQtyChange}
+                            className="qty-select"
+                        >
+                            {[...Array(10).keys()].map((num) => (
+                                <option key={num + 1} value={num + 1}>
+                                    {num + 1}
+                                </option>
+                            ))}
+                        </select>
+                        <button onClick={handleQtySubmit}>확인</button>
                     </div>
                     <div>
                         Total: ₩
-                        {currencyFormat(item.productId?.price * item.qty)}
+                        {currencyFormat(item.productId?.price * quantity)}
                     </div>
                 </Col>
             </Row>
