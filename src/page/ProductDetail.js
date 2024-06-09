@@ -8,12 +8,13 @@ import { cartActions } from "../action/cartAction";
 import { currencyFormat } from "../utils/number";
 import "../style/productDetail.style.css";
 
+const sizeOrder = ["XS", "S", "M", "L", "XL"];
+
 const ProductDetail = () => {
     const dispatch = useDispatch();
     const selectedProduct = useSelector(
         (state) => state.product.selectedProduct?.data
     );
-    const sizeOrder = ["XS", "S", "M", "L", "XL"];
     const loading = useSelector((state) => state.product.loading);
     const error = useSelector((state) => state.product.error);
     const { user } = useSelector((state) => state.user);
@@ -39,9 +40,7 @@ const ProductDetail = () => {
         if (!user) navigate("/login");
         dispatch(cartActions.addItemToCart({ id, size }));
     };
-    const sortedSizes = sizeOrder.filter(
-        (size) => selectedProduct.stock[size] !== undefined
-    );
+
     if (loading) {
         return (
             <div className="loader-container">
@@ -90,6 +89,11 @@ const ProductDetail = () => {
         );
     }
 
+    // 정렬된 사이즈 배열 생성
+    const sortedSizes = sizeOrder.filter(
+        (size) => selectedProduct.stock[size] !== undefined
+    );
+
     return (
         <Container className="product-detail-card">
             <Row>
@@ -130,12 +134,12 @@ const ProductDetail = () => {
                             {sortedSizes.map((item) =>
                                 selectedProduct.stock[item] > 0 ? (
                                     <Dropdown.Item key={item} eventKey={item}>
-                                        {item.toUpperCase()} -{" "}
-                                        {selectedProduct.stock[item]}개
+                                        {item.toUpperCase()}
                                         {selectedProduct.stock[item] <= 5 && (
                                             <span className="low-stock">
                                                 {" "}
-                                                (품절임박)
+                                                - {selectedProduct.stock[item]}
+                                                개 (품절임박)
                                             </span>
                                         )}
                                     </Dropdown.Item>

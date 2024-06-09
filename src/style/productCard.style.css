@@ -30,7 +30,6 @@
 .card:hover img {
     opacity: 0.2;
 }
-
 .productInfo {
     position: absolute;
     top: 50%;
@@ -50,8 +49,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 80%;
 }
-
 .card:hover .productName,
 .card:hover .productPrice {
     opacity: 1;
