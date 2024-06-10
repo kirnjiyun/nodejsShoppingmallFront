@@ -149,7 +149,7 @@ const ProductDetail = () => {
                                 selectedProduct.stock[item] > 0 ? (
                                     <Dropdown.Item key={item} eventKey={item}>
                                         {item.toUpperCase()}
-                                        {selectedProduct.stock[item] <= 5 && (
+                                        {selectedProduct.stock[item] <= 3 && (
                                             <span className="low-stock">
                                                 {" "}
                                                 - {selectedProduct.stock[item]}

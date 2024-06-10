@@ -20,34 +20,38 @@ const OrderReceipt = ({ cartList, onReload }) => {
     }, [cartList]);
 
     const handleReload = async () => {
-        setLoading(true);
-        await onReload();
-        setLoading(false);
+        if (onReload) {
+            setLoading(true);
+            await onReload();
+            setLoading(false);
+        }
     };
 
     return (
         <div className="receipt-container">
             <h3 className="receipt-title">
                 주문 내역{" "}
-                <Button
-                    variant="outline-secondary"
-                    className="reload-button"
-                    onClick={handleReload}
-                    disabled={loading}
-                >
-                    {loading ? (
-                        <Spinner
-                            as="span"
-                            animation="border"
-                            size="sm"
-                            role="status"
-                            aria-hidden="true"
-                        />
-                    ) : (
-                        <FontAwesomeIcon icon={faRedo} />
-                    )}
-                    {loading ? " 로딩 중..." : " 재로딩"}
-                </Button>
+                {onReload && (
+                    <Button
+                        variant="outline-secondary"
+                        className="reload-button"
+                        onClick={handleReload}
+                        disabled={loading}
+                    >
+                        {loading ? (
+                            <Spinner
+                                as="span"
+                                animation="border"
+                                size="sm"
+                                role="status"
+                                aria-hidden="true"
+                            />
+                        ) : (
+                            <FontAwesomeIcon icon={faRedo} />
+                        )}
+                        {loading ? " 로딩 중..." : " 재로딩"}
+                    </Button>
+                )}
             </h3>
             <ul className="receipt-list">
                 {cartList.map((product) => (
@@ -80,14 +84,16 @@ const OrderReceipt = ({ cartList, onReload }) => {
                     결제 진행하기
                 </Button>
             )}
-            <div>
-                가능한 결제 수단 귀하가 결제 단계에 도달할 때까지 가격 및
-                배송료는 확인되지 않습니다.
+            {onReload && (
                 <div>
-                    30일의 반품 가능 기간, 반품 수수료 및 미수취시 발생하는 추가
-                    배송 요금 읽어보기 반품 및 환불
+                    가능한 결제 수단 귀하가 결제 단계에 도달할 때까지 가격 및
+                    배송료는 확인되지 않습니다.
+                    <div>
+                        30일의 반품 가능 기간, 반품 수수료 및 미수취시 발생하는
+                        추가 배송 요금 읽어보기 반품 및 환불
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };

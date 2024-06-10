@@ -11,7 +11,6 @@ const initialState = {
     cartList: [],
     selectedItem: {},
     cartItemQty: 0,
-    totalPrice: 0,
 };
 
 function cartReducer(state = initialState, action) {
