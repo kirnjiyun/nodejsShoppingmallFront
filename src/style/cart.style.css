@@ -29,11 +29,17 @@
 .receipt-title {
     margin-bottom: 20px;
 }
+.reload-button {
+    margin-left: 10px;
+    font-size: x-small;
+    border-radius: 0;
+}
 
 .payment-button {
     width: 100%;
     padding: 16px;
     margin-bottom: 20px;
+    border-radius: 0;
 }
 .text-align-center {
     text-align: center;
@@ -41,4 +47,13 @@
 .empty-bag {
     background-color: white;
     padding: 20px;
+}
+.submit-button {
+    background-color: black;
+    color: white;
+    font-size: x-small;
+    margin-left: 10px;
+}
+.qty-box {
+    display: flex;
 }

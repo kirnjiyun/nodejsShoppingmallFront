@@ -50,7 +50,7 @@ const CartProductCard = ({ item, onQtyChange, onReload }) => {
                         </strong>
                     </div>
                     <div>Size: {item.size}</div>
-                    <div>
+                    <div className="qty-box">
                         Quantity:
                         <select
                             value={quantity}
@@ -63,7 +63,12 @@ const CartProductCard = ({ item, onQtyChange, onReload }) => {
                                 </option>
                             ))}
                         </select>
-                        <button onClick={handleQtySubmit}>확인</button>
+                        <button
+                            className="submit-button"
+                            onClick={handleQtySubmit}
+                        >
+                            확인
+                        </button>
                     </div>
                     <div>
                         Total: ₩

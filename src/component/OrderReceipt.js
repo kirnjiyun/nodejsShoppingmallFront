@@ -27,7 +27,28 @@ const OrderReceipt = ({ cartList, onReload }) => {
 
     return (
         <div className="receipt-container">
-            <h3 className="receipt-title">주문 내역</h3>
+            <h3 className="receipt-title">
+                주문 내역{" "}
+                <Button
+                    variant="outline-secondary"
+                    className="reload-button"
+                    onClick={handleReload}
+                    disabled={loading}
+                >
+                    {loading ? (
+                        <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                        />
+                    ) : (
+                        <FontAwesomeIcon icon={faRedo} />
+                    )}
+                    {loading ? " 로딩 중..." : " 재로딩"}
+                </Button>
+            </h3>
             <ul className="receipt-list">
                 {cartList.map((product) => (
                     <li key={product.productId?.id}>
@@ -49,25 +70,7 @@ const OrderReceipt = ({ cartList, onReload }) => {
                     <strong>₩ {currencyFormat(totalPrice)}</strong>
                 </div>
             </div>
-            <Button
-                variant="outline-secondary"
-                className="reload-button"
-                onClick={handleReload}
-                disabled={loading}
-            >
-                {loading ? (
-                    <Spinner
-                        as="span"
-                        animation="border"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
-                    />
-                ) : (
-                    <FontAwesomeIcon icon={faRedo} />
-                )}
-                {loading ? " 로딩 중..." : " 재로딩"}
-            </Button>
+
             {location.pathname.includes("/cart") && (
                 <Button
                     variant="dark"
