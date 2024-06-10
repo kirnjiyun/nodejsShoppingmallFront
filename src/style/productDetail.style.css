@@ -5,12 +5,28 @@
 .warning-message {
     color: red;
 }
-
+.product-name {
+    font-size: x-large;
+    margin-bottom: 20px;
+}
+.product-price {
+    font-size: large;
+    margin-bottom: 20px;
+}
 .product-info {
-    font-size: 20px;
+    font-size: small;
     margin-bottom: 10px;
 }
 .low-stock {
     color: red;
     font-weight: bold;
+}
+.delivery-info {
+    padding-top: 10px;
+    border-top: 1px solid black;
+    font-size: large;
+}
+
+.delivery-info > h6 {
+    margin-top: 10px;
 }

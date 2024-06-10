@@ -7,21 +7,26 @@ import { ColorRing } from "react-loader-spinner";
 import { cartActions } from "../action/cartAction";
 import { currencyFormat } from "../utils/number";
 import "../style/productDetail.style.css";
+import AddressChange from "../component/AddressChange";
+import DeliveryEstimate from "../component/DeliveryEstimate";
 
 const sizeOrder = ["XS", "S", "M", "L", "XL"];
 
 const ProductDetail = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { id } = useParams();
+
     const selectedProduct = useSelector(
         (state) => state.product.selectedProduct?.data
     );
     const loading = useSelector((state) => state.product.loading);
     const error = useSelector((state) => state.product.error);
     const { user } = useSelector((state) => state.user);
+
+    const [address, setAddress] = useState("지역을 선택해주세요");
     const [size, setSize] = useState("");
-    const { id } = useParams();
     const [sizeError, setSizeError] = useState(false);
-    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(productActions.getProductDetail(id));
@@ -37,7 +42,10 @@ const ProductDetail = () => {
             setSizeError(true);
             return;
         }
-        if (!user) navigate("/login");
+        if (!user) {
+            navigate("/login");
+            return;
+        }
         dispatch(cartActions.addItemToCart({ id, size }));
     };
 
@@ -49,7 +57,6 @@ const ProductDetail = () => {
                     height="80"
                     width="80"
                     ariaLabel="blocks-loading"
-                    wrapperStyle={{}}
                     wrapperClass="blocks-wrapper"
                     colors={[
                         "#e15b64",
@@ -89,7 +96,6 @@ const ProductDetail = () => {
         );
     }
 
-    // 정렬된 사이즈 배열 생성
     const sortedSizes = sizeOrder.filter(
         (size) => selectedProduct.stock[size] !== undefined
     );
@@ -105,12 +111,20 @@ const ProductDetail = () => {
                     />
                 </Col>
                 <Col className="product-info-area" sm={6}>
-                    <div className="product-info">{selectedProduct.name}</div>
-                    <div className="product-info">
+                    <div className="product-name">{selectedProduct.name}</div>
+                    <div className="product-price">
                         ₩ {currencyFormat(selectedProduct.price)}
                     </div>
                     <div className="product-info">
                         {selectedProduct.description}
+                    </div>
+                    <div>
+                        <div className="delivery-info">
+                            <div>배송안내</div>
+                            <h6>{address}</h6>
+                            <AddressChange setAddress={setAddress} />
+                            <DeliveryEstimate address={address} />
+                        </div>
                     </div>
 
                     <Dropdown
