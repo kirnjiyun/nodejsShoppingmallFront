@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
 import { currencyFormat } from "../utils/number";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRedo } from "@fortawesome/free-solid-svg-icons";
 
-const OrderReceipt = ({ cartList }) => {
+const OrderReceipt = ({ cartList, onReload }) => {
     const location = useLocation();
     const navigate = useNavigate();
     const [totalPrice, setTotalPrice] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const newTotalPrice = cartList.reduce((total, product) => {
@@ -15,6 +18,12 @@ const OrderReceipt = ({ cartList }) => {
         }, 0);
         setTotalPrice(newTotalPrice);
     }, [cartList]);
+
+    const handleReload = async () => {
+        setLoading(true);
+        await onReload();
+        setLoading(false);
+    };
 
     return (
         <div className="receipt-container">
@@ -40,6 +49,25 @@ const OrderReceipt = ({ cartList }) => {
                     <strong>₩ {currencyFormat(totalPrice)}</strong>
                 </div>
             </div>
+            <Button
+                variant="outline-secondary"
+                className="reload-button"
+                onClick={handleReload}
+                disabled={loading}
+            >
+                {loading ? (
+                    <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                    />
+                ) : (
+                    <FontAwesomeIcon icon={faRedo} />
+                )}
+                {loading ? " 로딩 중..." : " 재로딩"}
+            </Button>
             {location.pathname.includes("/cart") && (
                 <Button
                     variant="dark"

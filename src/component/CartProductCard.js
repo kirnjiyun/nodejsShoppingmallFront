@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { cartActions } from "../../src/action/cartAction";
 import { currencyFormat } from "../utils/number";
 
-const CartProductCard = ({ item, onQtyChange }) => {
+const CartProductCard = ({ item, onQtyChange, onReload }) => {
     const dispatch = useDispatch();
     const [quantity, setQuantity] = React.useState(item.qty);
 
@@ -15,8 +15,9 @@ const CartProductCard = ({ item, onQtyChange }) => {
         setQuantity(value);
     };
 
-    const handleQtySubmit = () => {
+    const handleQtySubmit = async () => {
         onQtyChange(item._id, quantity);
+        await onReload();
     };
 
     const deleteCart = (id) => {

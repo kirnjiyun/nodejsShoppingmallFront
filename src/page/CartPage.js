@@ -27,6 +27,11 @@ const CartPage = () => {
         dispatch(cartActions.updateQty(id, quantity));
     };
 
+    const handleReload = async () => {
+        await dispatch(cartActions.getCartList());
+        setCartList(cartListFromState);
+    };
+
     return (
         <Container>
             <Row>
@@ -37,6 +42,7 @@ const CartPage = () => {
                                 item={item}
                                 key={item._id}
                                 onQtyChange={handleQtyChange}
+                                onReload={handleReload}
                             />
                         ))
                     ) : (
@@ -47,7 +53,7 @@ const CartPage = () => {
                     )}
                 </Col>
                 <Col xs={12} md={5}>
-                    <OrderReceipt cartList={cartList} />
+                    <OrderReceipt cartList={cartList} onReload={handleReload} />
                 </Col>
             </Row>
         </Container>
