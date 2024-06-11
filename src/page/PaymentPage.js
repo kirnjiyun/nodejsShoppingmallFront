@@ -60,7 +60,7 @@ const PaymentPage = ({ carList }) => {
                 };
             }),
         };
-        dispatch(orderActions.createOrder(data)); // Pass data instead of { shipInfo, cardValue }
+        dispatch(orderActions.createOrder(data, navigate));
     };
 
     const handleFormChange = (event) => {
