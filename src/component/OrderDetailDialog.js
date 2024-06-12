@@ -7,7 +7,7 @@ import { ORDER_STATUS } from "../constants/order.constants";
 import { orderActions } from "../action/orderAction";
 import { currencyFormat } from "../utils/number";
 
-const OrderDetailDialog = ({ show, handleClose, order }) => {
+const OrderDetailDialog = ({ show, handleClose, order, editable = true }) => {
     const [orderStatus, setOrderStatus] = useState("");
 
     const dispatch = useDispatch();
@@ -45,7 +45,7 @@ const OrderDetailDialog = ({ show, handleClose, order }) => {
             <Modal.Body>
                 <p>예약번호: {orderNum}</p>
                 <p>주문날짜: {createdAt?.slice(0, 10)}</p>
-                <p>이메일: {userId?.email}</p>
+                {editable && <p>이메일: {userId?.email}</p>}
                 <p>
                     주소:
                     {shipTo?.address + " " + shipTo?.city}
@@ -96,31 +96,36 @@ const OrderDetailDialog = ({ show, handleClose, order }) => {
                         </tbody>
                     </Table>
                 </div>
-                <Form onSubmit={submitStatus}>
-                    <Form.Group as={Col} controlId="status">
-                        <Form.Label>Status</Form.Label>
-                        <Form.Select
-                            value={orderStatus}
-                            onChange={handleStatusChange}
-                        >
-                            {ORDER_STATUS.map((item, idx) => (
-                                <option key={idx} value={item.toLowerCase()}>
-                                    {item}
-                                </option>
-                            ))}
-                        </Form.Select>
-                    </Form.Group>
-                    <div className="order-button-area">
-                        <Button
-                            variant="light"
-                            onClick={handleClose}
-                            className="order-button"
-                        >
-                            닫기
-                        </Button>
-                        <Button type="submit">저장</Button>
-                    </div>
-                </Form>
+                {editable && (
+                    <Form onSubmit={submitStatus}>
+                        <Form.Group as={Col} controlId="status">
+                            <Form.Label>Status</Form.Label>
+                            <Form.Select
+                                value={orderStatus}
+                                onChange={handleStatusChange}
+                            >
+                                {ORDER_STATUS.map((item, idx) => (
+                                    <option
+                                        key={idx}
+                                        value={item.toLowerCase()}
+                                    >
+                                        {item}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+                        <div className="order-button-area">
+                            <Button
+                                variant="light"
+                                onClick={handleClose}
+                                className="order-button"
+                            >
+                                닫기
+                            </Button>
+                            <Button type="submit">저장</Button>
+                        </div>
+                    </Form>
+                )}
             </Modal.Body>
         </Modal>
     );

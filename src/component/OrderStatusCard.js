@@ -63,6 +63,8 @@ const OrderStatusCard = ({ orderItem }) => {
             <OrderDetailDialog
                 show={showDialog}
                 handleClose={handleCloseDialog}
+                order={orderItem}
+                editable={false}
             />
         </div>
     );

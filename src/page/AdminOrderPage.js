@@ -25,13 +25,13 @@ const AdminOrderPage = () => {
     const totalPageNum = useSelector((state) => state.order.totalPageNum);
     const tableHeader = [
         "#",
-        "Order#",
-        "Order Date",
-        "User",
-        "Order Item",
-        "Address",
-        "Total Price",
-        "Status",
+        "주문 번호",
+        "주문 일자",
+        "구매자",
+        "주문 상품",
+        "주소",
+        "총계",
+        "진행 상태",
     ];
 
     useEffect(() => {
