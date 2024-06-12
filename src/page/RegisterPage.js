@@ -3,10 +3,14 @@ import { Container, Form, Button, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { userActions } from "../action/userAction";
+import PasswordToggle from "../component/PasswordToggle"; // PasswordToggle 컴포넌트 임포트
 import "../style/register.style.css";
 
 const RegisterPage = () => {
-    const error = useSelector((state) => state.user.error);
+    const error = useSelector((state) => state.user?.error || null);
+    const isRegistered = useSelector(
+        (state) => state.user?.isRegistered || false
+    );
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [formData, setFormData] = useState({
@@ -18,7 +22,6 @@ const RegisterPage = () => {
     });
     const [passwordError, setPasswordError] = useState("");
     const [policyError, setPolicyError] = useState(false);
-    const isRegistered = useSelector((state) => state.user.isRegistered);
 
     useEffect(() => {
         if (isRegistered) {
@@ -67,6 +70,7 @@ const RegisterPage = () => {
                         id="email"
                         placeholder="Enter email"
                         onChange={handleChange}
+                        value={formData.email}
                         required
                     />
                 </Form.Group>
@@ -77,27 +81,34 @@ const RegisterPage = () => {
                         id="name"
                         placeholder="Enter name"
                         onChange={handleChange}
+                        value={formData.name}
                         required
                     />
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        id="password"
+                    <PasswordToggle
                         placeholder="Password"
-                        onChange={handleChange}
-                        required
+                        onChange={(event) =>
+                            setFormData({
+                                ...formData,
+                                password: event.target.value,
+                            })
+                        }
+                        value={formData.password}
                     />
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Confirm Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        id="confirmPassword"
+                    <PasswordToggle
                         placeholder="Confirm Password"
-                        onChange={handleChange}
-                        required
+                        onChange={(event) =>
+                            setFormData({
+                                ...formData,
+                                confirmPassword: event.target.value,
+                            })
+                        }
+                        value={formData.confirmPassword}
                         isInvalid={!!passwordError}
                     />
                     <Form.Control.Feedback type="invalid">

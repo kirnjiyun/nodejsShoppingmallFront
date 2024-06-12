@@ -36,8 +36,11 @@ const loginWithEmail =
             sessionStorage.setItem("token", token);
             dispatch({ type: types.LOGIN_SUCCESS, payload: { user, token } });
         } catch (error) {
-            dispatch({ type: types.LOGIN_FAIL, payload: error.message });
-            dispatch(logout());
+            const errorMessage = error.response?.data?.error || error.message;
+            dispatch({
+                type: types.LOGIN_FAIL,
+                payload: { error: errorMessage },
+            });
         }
     };
 
@@ -72,6 +75,7 @@ const registerUser =
             });
         }
     };
+const clearErrors = () => ({ type: types.CLEAR_ERRORS });
 
 export const userActions = {
     loginWithToken,
@@ -79,4 +83,5 @@ export const userActions = {
     logout,
     loginWithGoogle,
     registerUser,
+    clearErrors,
 };
