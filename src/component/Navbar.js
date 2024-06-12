@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import {
@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../action/userAction";
 import { cartActions } from "../action/cartAction";
-import { useEffect } from "react";
+import logo from "../assets/images/logo/logo.PNG";
 
 const Navbar = ({ user }) => {
     const dispatch = useDispatch();
@@ -27,16 +27,7 @@ const Navbar = ({ user }) => {
         }
     }, [user]);
 
-    const menuList = [
-        "여성",
-        "Divided",
-        "남성",
-        "신생아/유아",
-        "아동",
-        "H&M HOME",
-        "Sale",
-        "지속가능성",
-    ];
+    const menuList = ["상의", "하의", "원피스", "키즈", "가방", "신발"];
 
     const onCheckEnter = (event) => {
         if (event.key === "Enter") {
@@ -161,11 +152,7 @@ const Navbar = ({ user }) => {
 
             <div className="nav-logo">
                 <Link to="/products">
-                    <img
-                        width={100}
-                        src="/image/hm-logo.png"
-                        alt="hm-logo.png"
-                    />
+                    <img width={500} src={logo} alt="홈페이지 로고" />
                 </Link>
             </div>
             <div className="nav-menu-area">

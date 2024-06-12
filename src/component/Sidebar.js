@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Offcanvas, Navbar, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-
+import logo from "../assets/images/logo/logo.PNG";
 const Sidebar = () => {
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
@@ -15,11 +15,7 @@ const Sidebar = () => {
         return (
             <div>
                 <Link to="/">
-                    <img
-                        width={100}
-                        src="/image/hm-logo.png"
-                        alt="hm-logo.png"
-                    />
+                    <img width={200} src={logo} alt="hm-logo.png" />
                 </Link>
                 <div className="sidebar-item">Admin Account</div>
                 <ul className="sidebar-area">
