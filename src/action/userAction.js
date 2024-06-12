@@ -49,8 +49,21 @@ const logout = () => async (dispatch) => {
     sessionStorage.removeItem("token");
 };
 
-const loginWithGoogle = (token) => async (dispatch) => {
-    // Google 로그인 구현 추가
+const loginWithGoogle = (credential) => async (dispatch) => {
+    try {
+        dispatch({ type: types.GOOGLE_LOGIN_REQUEST });
+        const response = await api.post("/auth/google", { credential });
+        if (response.status !== 200) throw new Error(response.error);
+
+        sessionStorage.setItem("token", response.data.credential);
+        dispatch({
+            type: types.GOOGLE_LOGIN_SUCCESS,
+            payload: response.data,
+        });
+    } catch (error) {
+        dispatch({ type: types.GOOGLE_LOGIN_FAIL, payload: error.error });
+        dispatch(commonUiActions.showToastMessage(error.error, "error"));
+    }
 };
 
 const registerUser =

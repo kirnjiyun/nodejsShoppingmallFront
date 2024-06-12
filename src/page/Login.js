@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../action/userAction";
 import PasswordToggle from "../component/PasswordToggle";
-
+import { GoogleLogin } from "@react-oauth/google";
 import "../style/login.style.css";
 
 const Login = () => {
@@ -14,21 +14,26 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const loginWithEmail = (event) => {
-        event.preventDefault();
-        dispatch(userActions.loginWithEmail({ email, password }));
-    };
-
     useEffect(() => {
         if (user) {
             navigate("/");
         }
     }, [user, navigate]);
+
     useEffect(() => {
         return () => {
             dispatch(userActions.clearErrors());
         };
     }, [dispatch]);
+
+    const loginWithEmail = (event) => {
+        event.preventDefault();
+        dispatch(userActions.loginWithEmail({ email, password }));
+    };
+
+    const handleGoogleLogin = async (googleData) => {
+        dispatch(userActions.loginWithGoogle(googleData.credential));
+    };
 
     return (
         <Container className="login-area">
@@ -70,9 +75,12 @@ const Login = () => {
                         <button className="loginBtn kakaoBtn" disabled>
                             카카오톡 계정으로 로그인
                         </button>
-                        <button className="loginBtn googleBtn" disabled>
-                            구글 계정으로 로그인
-                        </button>
+                        <GoogleLogin
+                            onSuccess={handleGoogleLogin}
+                            onError={() => {
+                                console.log("Login Failed");
+                            }}
+                        />
                     </div>
                 </div>
             </Form>
