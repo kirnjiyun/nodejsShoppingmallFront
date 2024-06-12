@@ -3,7 +3,7 @@ import { Container, Form, Button, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { userActions } from "../action/userAction";
-import PasswordToggle from "../component/PasswordToggle"; // PasswordToggle 컴포넌트 임포트
+import PasswordToggle from "../component/PasswordToggle";
 import "../style/register.style.css";
 
 const RegisterPage = () => {

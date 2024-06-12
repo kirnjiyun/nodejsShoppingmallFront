@@ -54,25 +54,39 @@ const loginWithGoogle = (token) => async (dispatch) => {
 };
 
 const registerUser =
-    ({ email, name, password }) =>
+    ({ name, email, password }) =>
     async (dispatch) => {
         try {
             dispatch({ type: types.REGISTER_USER_REQUEST });
-            const response = await api.post("/user", { email, name, password });
+            const response = await api.post("/user", {
+                name,
+                email,
+                password,
+            });
             if (response.status !== 200) throw new Error(response.data.error);
+
             dispatch({
                 type: types.REGISTER_USER_SUCCESS,
                 payload: response.data,
             });
+            dispatch(
+                commonUiActions.showToastMessage(
+                    "회원가입이 완료되었습니다.",
+                    "success"
+                )
+            );
         } catch (error) {
-            let errorMessage = "Unknown error";
-            if (error.message) {
-                errorMessage = error.message;
-            }
+            const errorMessage = error.response?.data?.error || error.message;
             dispatch({
                 type: types.REGISTER_USER_FAIL,
                 payload: { error: errorMessage },
             });
+            dispatch(
+                commonUiActions.showToastMessage(
+                    error.message || "회원가입 실패",
+                    "error"
+                )
+            );
         }
     };
 const clearErrors = () => ({ type: types.CLEAR_ERRORS });
