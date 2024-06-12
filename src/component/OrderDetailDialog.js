@@ -1,49 +1,58 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Modal, Button, Col, Table } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import "../style/adminOrder.style.css";
 import { ORDER_STATUS } from "../constants/order.constants";
 import { orderActions } from "../action/orderAction";
 import { currencyFormat } from "../utils/number";
 
-const OrderDetailDialog = ({ open, handleClose }) => {
-    const selectedOrder = useSelector((state) => state.order.selectedOrder);
-    const [orderStatus, setOrderStatus] = useState(selectedOrder.status);
+const OrderDetailDialog = ({ show, handleClose, order }) => {
+    const [orderStatus, setOrderStatus] = useState("");
+
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (order) {
+            console.log("Selected Order in Dialog:", order);
+            setOrderStatus(order.status);
+        }
+    }, [order]);
 
     const handleStatusChange = (event) => {
         setOrderStatus(event.target.value);
     };
-    const submitStatus = () => {
-        dispatch(orderActions.updateOrder(selectedOrder._id, orderStatus));
+
+    const submitStatus = (event) => {
+        event.preventDefault();
+        if (order) {
+            dispatch(orderActions.updateOrder(order._id, orderStatus));
+        }
         handleClose();
     };
 
-    if (!selectedOrder) {
-        return <></>;
+    if (!order) {
+        return null;
     }
+
+    const { orderNum, createdAt, userId, shipTo, contact, items = [] } = order;
+
     return (
-        <Modal show={open} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Order Detail</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>예약번호: {selectedOrder.orderNum}</p>
-                <p>주문날짜: {selectedOrder.createdAt.slice(0, 10)}</p>
-                <p>이메일: {selectedOrder.userId.email}</p>
+                <p>예약번호: {orderNum}</p>
+                <p>주문날짜: {createdAt?.slice(0, 10)}</p>
+                <p>이메일: {userId?.email}</p>
                 <p>
                     주소:
-                    {selectedOrder.shipTo.address +
-                        " " +
-                        selectedOrder.shipTo.city}
+                    {shipTo?.address + " " + shipTo?.city}
                 </p>
                 <p>
                     연락처:
-                    {`${
-                        selectedOrder.contact.firstName +
-                        selectedOrder.contact.lastName
-                    } ${selectedOrder.contact.contact}`}
+                    {`${contact?.firstName} ${contact?.lastName} ${contact?.contact}`}
                 </p>
                 <p>주문내역</p>
                 <div className="overflow-x">
@@ -58,11 +67,11 @@ const OrderDetailDialog = ({ open, handleClose }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {selectedOrder.items.length > 0 &&
-                                selectedOrder.items.map((item) => (
+                            {items.length > 0 &&
+                                items.map((item) => (
                                     <tr key={item._id}>
                                         <td>{item._id}</td>
-                                        <td>{item.productId.name}</td>
+                                        <td>{item.productId?.name}</td>
                                         <td>{currencyFormat(item.price)}</td>
                                         <td>{item.qty}</td>
                                         <td>
@@ -75,7 +84,13 @@ const OrderDetailDialog = ({ open, handleClose }) => {
                             <tr>
                                 <td colSpan={4}>총계:</td>
                                 <td>
-                                    {currencyFormat(selectedOrder.totalPrice)}
+                                    {currencyFormat(
+                                        items.reduce(
+                                            (total, item) =>
+                                                total + item.price * item.qty,
+                                            0
+                                        )
+                                    )}
                                 </td>
                             </tr>
                         </tbody>

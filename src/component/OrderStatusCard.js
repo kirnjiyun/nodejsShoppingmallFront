@@ -1,20 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { Row, Col, Badge } from "react-bootstrap";
 import { badgeBg } from "../constants/order.constants";
 import { currencyFormat } from "../utils/number";
+import OrderDetailDialog from "./OrderDetailDialog";
+import { useDispatch, useSelector } from "react-redux";
+import { orderActions } from "../action/orderAction";
 
 const OrderStatusCard = ({ orderItem }) => {
+    const [showDialog, setShowDialog] = useState(false);
+    const selectedOrder = useSelector((state) => state.order.selectedOrder);
+    const dispatch = useDispatch();
+
     const totalPrice = orderItem.items.reduce((total, item) => {
-        const price = item.price || 0; // item 객체에서 price 가져오기
-        console.log("Item:", item);
-        console.log("Product ID:", item.productId);
-        console.log("Price:", price, "Quantity:", item.qty);
+        const price = item.price || 0;
         return total + price * item.qty;
     }, 0);
 
+    const handleCardClick = () => {
+        console.log("Selected order:", orderItem);
+        dispatch(orderActions.selectOrder(orderItem));
+        setShowDialog(true);
+    };
+
+    const handleCloseDialog = () => {
+        setShowDialog(false);
+        dispatch(orderActions.selectOrder(null));
+    };
+
     return (
         <div>
-            <Row className="status-card">
+            <Row className="status-card" onClick={handleCardClick}>
                 <Col xs={2}>
                     <img
                         src={orderItem.items[0]?.productId?.image}
@@ -45,6 +60,10 @@ const OrderStatusCard = ({ orderItem }) => {
                     </Badge>
                 </Col>
             </Row>
+            <OrderDetailDialog
+                show={showDialog}
+                handleClose={handleCloseDialog}
+            />
         </div>
     );
 };

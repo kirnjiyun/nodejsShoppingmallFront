@@ -19,7 +19,9 @@ const AdminOrderPage = () => {
         page: query.get("page") || 1,
         ordernum: query.get("ordernum") || "",
     });
+    const error = useSelector((state) => state.order.error);
     const [open, setOpen] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState(null);
     const totalPageNum = useSelector((state) => state.order.totalPageNum);
     const tableHeader = [
         "#",
@@ -47,8 +49,8 @@ const AdminOrderPage = () => {
     }, [searchQuery]);
 
     const openEditForm = (order) => {
+        setSelectedOrder(order);
         setOpen(true);
-        dispatch({ type: types.SET_SELECTED_ORDER, payload: order });
     };
 
     const handlePageClick = ({ selected }) => {
@@ -57,6 +59,7 @@ const AdminOrderPage = () => {
 
     const handleClose = () => {
         setOpen(false);
+        setSelectedOrder(null);
     };
 
     return (
@@ -100,7 +103,11 @@ const AdminOrderPage = () => {
             </Container>
 
             {open && (
-                <OrderDetailDialog open={open} handleClose={handleClose} />
+                <OrderDetailDialog
+                    show={open}
+                    handleClose={handleClose}
+                    order={selectedOrder}
+                />
             )}
         </div>
     );

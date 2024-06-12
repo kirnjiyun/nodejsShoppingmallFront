@@ -3,7 +3,7 @@ import * as types from "../constants/order.constants";
 const initialState = {
     orderList: [],
     orderNum: "",
-    selectedOrder: {},
+    selectedOrder: null,
     error: "",
     loading: false,
     totalPageNum: 1,
@@ -38,4 +38,5 @@ function orderReducer(state = initialState, action) {
             return state;
     }
 }
+
 export default orderReducer;
