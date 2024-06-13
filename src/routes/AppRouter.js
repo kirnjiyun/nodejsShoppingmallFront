@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router";
+import { Route, Routes, useNavigate } from "react-router";
 import AdminOrderPage from "../page/AdminOrderPage";
 import AdminProduct from "../page/AdminProduct";
 import CartPage from "../page/CartPage";
@@ -11,6 +11,7 @@ import ProductAll from "../page/ProductAll";
 import ProductDetail from "../page/ProductDetail";
 import RegisterPage from "../page/RegisterPage";
 import PrivateRoute from "./PrivateRoute";
+import AuthHandler from "../page/AuthHandler";
 
 const AppRouter = () => {
     return (
@@ -20,6 +21,8 @@ const AppRouter = () => {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/products" element={<ProductAll />} />
+            <Route path="/auth" element={<AuthHandler />} />{" "}
+            {/* Add AuthHandler route */}
             <Route element={<PrivateRoute permissionLevel="customer" />}>
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/payment" element={<PaymentPage />} />

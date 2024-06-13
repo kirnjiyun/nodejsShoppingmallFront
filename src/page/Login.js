@@ -6,6 +6,7 @@ import { userActions } from "../action/userAction";
 import PasswordToggle from "../component/PasswordToggle";
 import { GoogleLogin } from "@react-oauth/google";
 import "../style/login.style.css";
+import KakaoLogin from "../component/KakaoLogin";
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -72,9 +73,7 @@ const Login = () => {
                 <div className="text-align-center mt-3">
                     <p>-sns 계정으로 로그인하기-</p>
                     <div className="bottomBox">
-                        <button className="loginBtn kakaoBtn" disabled>
-                            카카오톡 계정으로 로그인
-                        </button>
+                        <KakaoLogin />
                         <GoogleLogin
                             onSuccess={handleGoogleLogin}
                             onError={() => {
