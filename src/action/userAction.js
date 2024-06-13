@@ -49,21 +49,32 @@ const logout = () => async (dispatch) => {
     dispatch({ type: types.LOGOUT });
     sessionStorage.removeItem("token");
 };
-
 const loginWithGoogle = (credential) => async (dispatch) => {
     try {
         dispatch({ type: types.GOOGLE_LOGIN_REQUEST });
         const response = await api.post("/auth/google", { credential });
-        if (response.status !== 200) throw new Error(response.error);
 
-        sessionStorage.setItem("token", response.data.credential);
+        if (response.status !== 200) {
+            throw new Error(response.data.error || "Unknown error occurred");
+        }
+
+        const { token, user } = response.data;
+        if (!token) {
+            throw new Error("Token is undefined");
+        }
+
+        sessionStorage.setItem("token", token);
         dispatch({
             type: types.GOOGLE_LOGIN_SUCCESS,
-            payload: response.data,
+            payload: { user, token },
         });
     } catch (error) {
-        dispatch({ type: types.GOOGLE_LOGIN_FAIL, payload: error.error });
-        dispatch(commonUiActions.showToastMessage(error.error, "error"));
+        const errorMessage = error.response?.data?.error || error.message;
+        dispatch({
+            type: types.GOOGLE_LOGIN_FAIL,
+            payload: { error: errorMessage },
+        });
+        dispatch(commonUiActions.showToastMessage(errorMessage, "error"));
     }
 };
 
