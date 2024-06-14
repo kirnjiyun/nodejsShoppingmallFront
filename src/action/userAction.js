@@ -2,8 +2,8 @@ import axios from "axios";
 import api from "../utils/api";
 import * as types from "../constants/user.constants";
 import { commonUiActions } from "./commonUiAction";
-import * as commonTypes from "../constants/commonUI.constants";
-import { useHistory } from "react-router-dom";
+
+// 토큰으로 로그인하는 액션
 const loginWithToken = () => async (dispatch) => {
     try {
         dispatch({ type: types.LOGIN_WITH_TOKEN_REQUEST });
@@ -25,6 +25,7 @@ const loginWithToken = () => async (dispatch) => {
     }
 };
 
+// 이메일과 비밀번호로 로그인하는 액션
 const loginWithEmail =
     ({ email, password }) =>
     async (dispatch) => {
@@ -45,10 +46,13 @@ const loginWithEmail =
         }
     };
 
+// 로그아웃하는 액션
 const logout = () => async (dispatch) => {
     dispatch({ type: types.LOGOUT });
     sessionStorage.removeItem("token");
 };
+
+// 구글로 로그인하는 액션
 const loginWithGoogle = (credential) => async (dispatch) => {
     try {
         dispatch({ type: types.GOOGLE_LOGIN_REQUEST });
@@ -78,6 +82,7 @@ const loginWithGoogle = (credential) => async (dispatch) => {
     }
 };
 
+// 새로운 사용자를 등록하는 액션
 const registerUser =
     ({ name, email, password }) =>
     async (dispatch) => {
@@ -114,9 +119,12 @@ const registerUser =
             );
         }
     };
+
+// 오류를 지우는 액션
 const clearErrors = () => ({ type: types.CLEAR_ERRORS });
+
+// 카카오로 로그인하는 액션
 const loginWithKakao = (code) => async (dispatch) => {
-    const navigate = useNavigate(); // useNavigate hook 사용
     try {
         dispatch({ type: types.KAKAO_LOGIN_REQUEST });
 
@@ -130,9 +138,6 @@ const loginWithKakao = (code) => async (dispatch) => {
             type: types.KAKAO_LOGIN_SUCCESS,
             payload: { user, token },
         });
-
-        // 상태 업데이트 후 리디렉션
-        navigate("/"); // 홈 화면으로 리디렉션
     } catch (error) {
         const errorMessage = error.response?.data?.error || error.message;
         dispatch({

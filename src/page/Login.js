@@ -36,6 +36,12 @@ const Login = () => {
         dispatch(userActions.loginWithGoogle(googleData.credential));
     };
 
+    const handleKakaoLoginSuccess = (code) => {
+        dispatch(userActions.loginWithKakao(code)).then(() => {
+            navigate("/");
+        });
+    };
+
     return (
         <Container className="login-area">
             {error && (
@@ -73,7 +79,7 @@ const Login = () => {
                 <div className="text-align-center mt-3">
                     <p>-sns 계정으로 로그인하기-</p>
                     <div className="bottomBox">
-                        <KakaoLogin />
+                        <KakaoLogin onSuccess={handleKakaoLoginSuccess} />
                         <GoogleLogin
                             onSuccess={handleGoogleLogin}
                             onError={() => {
